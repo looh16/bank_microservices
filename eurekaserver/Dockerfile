@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim as build
 MAINTAINER custodio.com
 
 # Add the application's jar to the container
-COPY target/loans-0.0.1-SNAPSHOT.jar loans-0.0.1-SNAPSHOT.jar
+COPY target/eurekaserver-0.0.1-SNAPSHOT.jar loans-0.0.1-SNAPSHOT.jar
 
 #execute the application
 ENTRYPOINT ["java","-jar","/eurekaserver-0.0.1-SNAPSHOT.jar"]
