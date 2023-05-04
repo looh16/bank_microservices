@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.accounts.api.config.AccountsServiceConfig;
@@ -69,12 +70,11 @@ public class AccountsController {
 	}
 	
 	@PostMapping("/myCustomerDetails")
-	
 	@CircuitBreaker(name = "detailsForCustomerSupportApp",fallbackMethod="myCustomerDetailsFallBack")
-	public CustomerDetails myCustomerDetails(@RequestBody Customer customer) {
+	public CustomerDetails myCustomerDetails(@RequestHeader("bank-correlation-id") String correlationid,@RequestBody Customer customer) {
 		Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId());
-		List<Loans> loans = loansClient.getLoansDetails(customer);
-		List<Cards> cards = cardsClient.getCardDetails(customer);
+		List<Loans> loans = loansClient.getLoansDetails(correlationid,customer);
+		List<Cards> cards = cardsClient.getCardDetails(correlationid,customer);
 
 		CustomerDetails customerDetails = new CustomerDetails();
 		customerDetails.setAccounts(accounts);
@@ -86,9 +86,9 @@ public class AccountsController {
 	}
 	
 	@SuppressWarnings("unused")
-	private CustomerDetails myCustomerDetailsFallBack(Customer customer, Throwable t) {
+	private CustomerDetails myCustomerDetailsFallBack(@RequestHeader("bank-correlation-id") String correlationid,Customer customer, Throwable t) {
 		Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId());
-		List<Loans> loans = loansClient.getLoansDetails(customer);
+		List<Loans> loans = loansClient.getLoansDetails(correlationid,customer);
 		CustomerDetails customerDetails = new CustomerDetails();
 		customerDetails.setAccounts(accounts);
 		customerDetails.setLoans(loans);
