@@ -1,5 +1,13 @@
 # bank_microservices
 
+A Simple Project to Understand Microservices Architecture Using Spring Boot, Spring Cloud Components, Docker, and Kubernetes.
+
+## Built With
+
+- Java 17
+- Spring Boot
+
+
 
 ## Used Maven Commands
 
