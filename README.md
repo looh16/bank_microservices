@@ -7,7 +7,6 @@
 | ------------- | ------------- |
 | "mvn clean install -Dmaven.test.skip=true" | To generate a jar inside target folder |
 | "mvn spring-boot:run" | To start a springboot maven project |
-| "mvn spring-boot:build-image -Dmaven.test.skip=true" | To generate a docker image using Buildpacks. No need of Dockerfile |
 
 ## Used Docker Commands
 
